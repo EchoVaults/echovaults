@@ -21,8 +21,7 @@ When dealing with life-and-death matters, **trust cannot be built on promises al
 
 ### What We Keep Proprietary:
 - **User Interface**: Our design and user experience
-- **Business Logic**: Subscription and feature management
-- **Infrastructure**: Server configurations and deployment
+- **Trademarked Name**: EchoVaults as brand
 
 ## Repository Contents
 
@@ -171,9 +170,9 @@ dart test test/security_tests.dart --name "Security Questions Validation Tests"
 ### For Security Researchers
 
 1. **Focus Areas**:
-    - Encryption implementation in `core_encryption.dart`
-    - Access control logic in `privacy_levels.dart`
-    - Authentication in `security_questions.dart`
+   - Encryption implementation in `core_encryption.dart`
+   - Access control logic in `privacy_levels.dart`
+   - Authentication in `security_questions.dart`
 
 2. **Test Vectors**: Use the comprehensive test suite as a starting point
 
@@ -249,4 +248,5 @@ See [LICENSE](LICENSE) for full details.
 
 **Last Updated**: January 2025  
 **Repository Version**: 1.0.0  
-**Corresponds to EchoVaults App Version**: 1.x.x
+**Corresponds to EchoVaults App Version**: 1.1.0
+
