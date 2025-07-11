@@ -200,12 +200,6 @@ Found a security issue? We appreciate responsible disclosure:
 **Standard Cryptography**: No custom crypto, only proven algorithms  
 **Local-Only Processing**: Your data never leaves your device
 
-### What This Repository Doesn't Include:
-
-**User Interface Code**: Our design and UX remain proprietary  
-**Business Logic**: Subscription and payment processing  
-**Marketing Features**: Analytics, onboarding flows, etc.  
-**Infrastructure**: Server configurations and deployment scripts
 
 ## Building Trust in Digital Legacy
 
