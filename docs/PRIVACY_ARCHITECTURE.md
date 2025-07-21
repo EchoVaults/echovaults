@@ -273,4 +273,4 @@ When moving devices or restoring backups:
 4. **Respect for Intent**: Your privacy choices are permanently honored
 5. **No Backdoors**: There is no way to bypass your privacy settings
 
-**Your privacy is not a privilege we grant - it's a right we protect through technology.**
+**Your privacy is not a privilege we grant - it's a right we protect through technology.** 

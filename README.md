@@ -70,7 +70,7 @@ File attachment security:
 
 ### Documentation
 
-#### [`SECURITY.md`](SECURITY.md)
+#### [`/docs/SECURITY.md`](/docs/SECURITY.md)
 Comprehensive security architecture documentation covering:
 - **Enhanced encryption standards** with PBKDF2 implementation details
 - **Cross-version compatibility** and automatic fallback mechanisms
@@ -79,7 +79,7 @@ Comprehensive security architecture documentation covering:
 - Access control mechanisms
 - Emergency scenarios and safeguards
 
-#### [`PRIVACY_ARCHITECTURE.md`](PRIVACY_ARCHITECTURE.md)
+#### [`/docs/PRIVACY_ARCHITECTURE.md`](/docs/PRIVACY_ARCHITECTURE.md)
 Deep dive into privacy design:
 - Philosophy behind the three privacy levels
 - User mental models and decision frameworks
@@ -241,38 +241,43 @@ Found a security issue? We appreciate responsible disclosure:
 
 ## Trust Through Enhanced Transparency
 
-### What This Repository Proves:
+### What are we trying to prove?:
 
-**🔐 Enhanced Cryptographic Protection**: PBKDF2-HMAC-SHA256 with 10,000 iterations  
-**🧂 Salt-Based Security**: Unique salt per encryption prevents rainbow table attacks  
-**📦 Optimized Binary Format**: Enhanced storage format with version compatibility  
-**⚡ Performance Optimization**: Smart caching without compromising security  
-**🔄 Backward Compatibility**: Your existing data remains fully accessible  
-**🛡️ No Hidden Surveillance**: All data processing is visible and auditable  
-**🚫 No Backdoor Access**: Mathematical impossibility of unauthorized access  
-**🎯 Privacy by Design**: Technical enforcement of user privacy choices  
-**📚 Standard Cryptography**: No custom crypto, only proven algorithms (now enhanced)  
-**💻 Local-Only Processing**: Your data never leaves your device
+**Enhanced Cryptographic Protection**: PBKDF2-HMAC-SHA256 with 10,000 iterations  
+**Salt-Based Security**: Unique salt per encryption prevents rainbow table attacks  
+**Optimized Binary Format**: Enhanced storage format with version compatibility  
+**Performance Optimization**: Smart caching without compromising security  
+**Backward Compatibility**: Your existing data remains fully accessible  
+**No Hidden Surveillance**: All data processing is visible and auditable  
+**No Backdoor Access**: Mathematical impossibility of unauthorized access  
+**Privacy by Design**: Technical enforcement of user privacy choices  
+**Standard Cryptography**: No custom crypto, only proven algorithms (now enhanced)  
+**Local-Only Processing**: Your data never leaves your device
 
 ## Enhanced Security Promises
 
 ### **Version 2.0 Security Enhancements**
 
-1. **🔐 PBKDF2 Protection**: 10,000 iterations vs single hash for brute-force resistance
-2. **🧂 Unique Salt Generation**: Every encryption uses a unique cryptographic salt
-3. **📦 Optimized Storage**: Enhanced binary format reduces overhead and improves security
-4. **⚡ Smart Caching**: PBKDF2 results cached securely for performance without security loss
-5. **🔄 Seamless Compatibility**: Automatic detection and fallback for existing encrypted data
-6. **🛡️ Enhanced Validation**: Multi-layer integrity checking and corruption detection
+1. **PBKDF2 Protection**: 10,000 iterations vs single hash for brute-force resistance
+2. **Unique Salt Generation**: Every encryption uses a unique cryptographic salt
+3. **Optimized Storage**: Enhanced binary format reduces overhead and improves security
+4. **Smart Caching**: PBKDF2 results cached securely for performance without security loss
+5. **Seamless Compatibility**: Automatic detection and fallback for existing encrypted data
+6. **Enhanced Validation**: Multi-layer integrity checking and corruption detection
 
 ### **Maintained Guarantees**
 
-1. **🔒 Your Data Stays Local**: Never uploaded to our servers
-2. **🎛️ You Control Access**: Granular privacy levels you configure
-3. **⏰ Your Timing Rules**: Delays and access controls you set
-4. **🚫 No Backdoors**: Mathematically impossible for us to access your data
-5. **🔍 Full Transparency**: Security implementation is open for audit
-6. **⬆️ Automatic Upgrade**: Enhanced security for new data, existing data protected
+
+1. **Your Data Stays Local**: Never uploaded to our servers
+2. **You Control Access**: Granular privacy levels you configure
+3. **Your Timing Rules**: Delays and access controls you set
+4. **No Backdoors**: Mathematically impossible for us to access your data
+5. **Full Transparency**: Security implementation is open for audit
+6. **Enhanced Protection**: PBKDF2-HMAC-SHA256 with 10,000 iterations
+7. **Salt-Based Security**: Unique salt prevents rainbow table attacks
+8. **Optimized Performance**: Smart caching without security compromise
+9. **Backward Compatibility**: Your existing data remains fully accessible
+10. **Continuous Improvement**: Ongoing security enhancements you can verify
 
 ## Building Trust in Digital Legacy
 
@@ -289,23 +294,6 @@ And now with Version 2.0: *"Here's how we've made it even more secure while keep
 
 Your privacy isn't something we grant you - it's something we **mathematically guarantee** through technology you can inspect and verify. With PBKDF2, we've made that guarantee exponentially stronger.
 
-### **Transparency Without Compromise**
-
-We've open-sourced everything that matters for security while keeping the business differentiation that allows us to continue developing and improving the service. The enhanced security proves our commitment to your protection.
-
-## The Enhanced EchoVaults Promise
-
-1. **📱 Your Data Stays Local**: Never uploaded to our servers
-2. **🎛️ You Control Access**: Granular privacy levels you configure
-3. **⏰ Your Timing Rules**: Delays and access controls you set
-4. **🚫 No Backdoors**: Mathematically impossible for us to access your data
-5. **🔍 Full Transparency**: Security implementation is open for audit
-6. **🔐 Enhanced Protection**: PBKDF2-HMAC-SHA256 with 10,000 iterations
-7. **🧂 Salt-Based Security**: Unique salt prevents rainbow table attacks
-8. **⚡ Optimized Performance**: Smart caching without security compromise
-9. **🔄 Backward Compatibility**: Your existing data remains fully accessible
-10. **⬆️ Continuous Improvement**: Ongoing security enhancements you can verify
-
 ---
 
 ## About EchoVaults
@@ -314,6 +302,7 @@ EchoVaults is built by a team that believes **privacy is a human right** and **t
 
 **Website**: [echovaults.org](https://echovaults.org)  
 **Transparency Page**: [echovaults.org/transparency](https://echovaults.org/transparency)
+**Contributors**: [echovaults.org/contributors](https://echovaults.org/contributors)
 
 ---
 
@@ -331,6 +320,4 @@ See [LICENSE](LICENSE) for full details.
 **Repository Version**: 2.0.0 (Enhanced with PBKDF2)  
 **Corresponds to EchoVaults App Version**: 2.1.0  
 **Security Level**: Enhanced (PBKDF2-HMAC-SHA256)  
-**Backward Compatibility**: Full (V1 Legacy SHA-256 supported)
-
 

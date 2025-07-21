@@ -372,7 +372,7 @@ debugPrint('Key derivation completed in ${stopwatch.elapsedMilliseconds}ms');
 debugPrint('Security question ${i + 1} answered incorrectly');
 debugPrint('All ${questions.length} security questions answered correctly');
 debugPrint('Owner authentication successful with enhanced session management');
-debugPrint('Trusted person access granted for vault: $vaultId');
+debugPrint('Trusted person access granted for vault: $vaultId'); 
 ```
 
 ## Enhanced Compliance and Standards
@@ -446,4 +446,4 @@ For security vulnerabilities or concerns regarding this implementation:
 
 **Security Version**: 2.0 (Enhanced with PBKDF2)
 **Backward Compatibility**: Maintains full compatibility with Version 1.0 (Legacy SHA-256)
-**Last Updated**: July 21st 2025
+**Last Updated**: July 21st 2025 
