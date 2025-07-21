@@ -88,7 +88,7 @@ Deep dive into privacy design:
 
 ### Tests
 
-#### [`tests/security_tests.dart`](tests/security_tests.dart)
+#### [`tests/security_test.dart`](tests/security_test.dart)
 Comprehensive test suite covering:
 - **PBKDF2 vs Legacy encryption** round-trip tests
 - **Cross-version compatibility** validation
