@@ -320,4 +320,4 @@ See [LICENSE](LICENSE) for full details.
 **Repository Version**: 2.0.0 (Enhanced with PBKDF2)  
 **Corresponds to EchoVaults App Version**: 2.1.0  
 **Security Level**: Enhanced (PBKDF2-HMAC-SHA256)  
-**Backward Compatibility**: Full (V1 Legacy SHA-256 supported) 
+
