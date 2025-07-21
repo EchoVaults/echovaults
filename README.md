@@ -49,7 +49,7 @@ final encoded = CoreEncryptionService.encryptTextForBasicVault(content, masterPa
 final encryptedFile = await CoreEncryptionService.encryptBinaryData(fileData, masterPassword);
 ```
 
-#### [`security/privacy_levels.dart`](security/privacy_levels.dart)
+#### [`security/privacy_level.dart`](security/privacy_level.dart)
 Implements the three-tier privacy system:
 - **🟢 Basic**: Immediate access after security questions
 - **🟡 Sensitive**: Delayed access (configurable: hours to years)

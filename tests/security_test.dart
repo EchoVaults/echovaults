@@ -613,7 +613,7 @@ void main() {
       );
       expect(canAccess, isFalse);
 
-      // 4. Even if they try to decrypt, they can't without master password
+      // 4. Even if they try to decrypt, they can't without master password, just not possible.
       final decryptedContent = await CoreEncryptionService.decryptText(encryptedContent, 'wrong_password');
       expect(decryptedContent, equals('')); // Should fail
     });

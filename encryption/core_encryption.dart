@@ -580,7 +580,7 @@ class CoreEncryptionService {
   /// Ensures key is exactly the desired length by padding or truncating
   ///
   /// [key] Input key bytes
-  /// [desiredLength] Target length in bytes
+  /// [desiredLength] Target the length in bytes
   ///
   /// Returns: Key bytes adjusted to exact desired length
   static Uint8List _padOrTruncateKey(Uint8List key, int desiredLength) {
