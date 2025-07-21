@@ -372,7 +372,7 @@ debugPrint('Key derivation completed in ${stopwatch.elapsedMilliseconds}ms');
 debugPrint('Security question ${i + 1} answered incorrectly');
 debugPrint('All ${questions.length} security questions answered correctly');
 debugPrint('Owner authentication successful with enhanced session management');
-debugPrint('Trusted person access granted for vault: $vaultId');
+debugPrint('Trusted person access granted for vault: $vaultId'); 
 ```
 
 ## Enhanced Compliance and Standards
