@@ -28,7 +28,7 @@ When dealing with life-and-death matters, **trust cannot be built on promises al
 
 ### Core Security Components
 
-#### [`lib/encryption/core_encryption.dart`](lib/encryption/core_encryption.dart)
+#### [`encryption/core_encryption.dart`](encryption/core_encryption.dart)
 The heart of EchoVaults security with **enhanced cryptographic protection**. Contains:
 - **AES-256 encryption** with PBKDF2-HMAC-SHA256 key derivation
 - **10,000 iteration PBKDF2** for brute-force resistance
@@ -49,19 +49,19 @@ final encoded = CoreEncryptionService.encryptTextForBasicVault(content, masterPa
 final encryptedFile = await CoreEncryptionService.encryptBinaryData(fileData, masterPassword);
 ```
 
-#### [`lib/security/privacy_levels.dart`](lib/security/privacy_levels.dart)
+#### [`security/privacy_levels.dart`](security/privacy_levels.dart)
 Implements the three-tier privacy system:
 - **🟢 Basic**: Immediate access after security questions
 - **🟡 Sensitive**: Delayed access (configurable: hours to years)
 - **🔴 Ultra**: Owner-only, never accessible to trusted persons
 
-#### [`lib/security/security_questions.dart`](lib/security/security_questions.dart)
+#### [`security/security_questions.dart`](security/security_questions.dart)
 Security questions validation logic:
 - **Exact matching** (case-sensitive, no fuzzy matching)
 - **All questions required** (no partial success)
 - **Integrity verification** without breaking emergency access
 
-#### [`lib/validation/file_validation.dart`](lib/validation/file_validation.dart)
+#### [`validation/file_validation.dart`](validation/file_validation.dart)
 File attachment security:
 - **Local storage only** (no cloud uploads)
 - **File type validation** and content verification
@@ -88,7 +88,7 @@ Deep dive into privacy design:
 
 ### Tests
 
-#### [`test/security_tests.dart`](test/security_tests.dart)
+#### [`tests/security_tests.dart`](tests/security_tests.dart)
 Comprehensive test suite covering:
 - **PBKDF2 vs Legacy encryption** round-trip tests
 - **Cross-version compatibility** validation
