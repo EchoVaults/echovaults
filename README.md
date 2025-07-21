@@ -109,7 +109,7 @@ Comprehensive test suite covering:
 - **Example**: Medical information, emergency contacts
 
 ### Sensitive Privacy
-**"They can see this, but only after thinking about it"**
+**"They can see this, but only after my configured access time has lapsed"**
 
 - **Use Case**: Personal letters, family secrets, emotional content
 - **Access**: Available after configurable delay (12 hours to 10 years)
