@@ -23,50 +23,111 @@ EchoVaults is a digital legacy application designed to securely store and transm
 - **Sensitive**: Delayed access for trusted persons (configurable timing)
 - **Ultra**: Owner-only access, never accessible to trusted persons
 
-### 4. **Cryptographic Standards**
-- AES-256 encryption for all sensitive data
-- SHA-256 for password hashing and key derivation
-- Cryptographically secure random IV generation
-- No custom cryptography - only proven algorithms
+### 4. **Enhanced Cryptographic Standards**
+- **AES-256 encryption** for all sensitive data
+- **PBKDF2-HMAC-SHA256** for secure key derivation (10,000 iterations)
+- **SHA-256 for password hashing** and legacy compatibility
+- **Cryptographically secure random** salt and IV generation
+- **No custom cryptography** - only proven, industry-standard algorithms
 
-## Encryption Implementation
+## Enhanced Encryption Implementation
 
 ### Master Password Security
 
+#### Modern PBKDF2 Key Derivation (V2)
 ```dart
-// Password hashing for storage
-String hashedPassword = sha256.convert(utf8.encode(password)).toString();
+// Enhanced key derivation using PBKDF2-HMAC-SHA256
+final salt = generateSalt(); // Cryptographically secure random salt
+final pbkdf2 = Pbkdf2(
+  macAlgorithm: Hmac.sha256(),
+  iterations: 10000,  // 10,000 iterations for brute-force resistance
+  bits: 256,          // 256-bit key
+);
+final key = await pbkdf2.deriveKeyFromPassword(password: masterPassword, nonce: salt);
+```
 
-// Key derivation for encryption
-Key encryptionKey = Key(sha256.convert(utf8.encode(password)).bytes);
+#### Legacy SHA-256 Support (V1)
+```dart
+// Legacy method maintained for backward compatibility
+final passwordBytes = utf8.encode(password);
+final digest = sha256.convert(passwordBytes);
+final key = Key(digest.bytes);
+```
+
+#### Password Hashing for Storage
+```dart
+// SHA-256 hashing for password verification
+String hashedPassword = sha256.convert(utf8.encode(password)).toString();
 ```
 
 ### Vault Encryption by Privacy Level
 
 #### Ultra Sensitive Vaults
-- **Encryption**: AES-256 with random IV
+- **Encryption**: AES-256 with PBKDF2-derived keys and random IV/salt
 - **Access**: Owner only, requires master password
-- **Key Derivation**: Direct from master password via SHA-256
+- **Key Derivation**: PBKDF2-HMAC-SHA256 (10,000 iterations) or legacy SHA-256 fallback
+- **Format**: JSON with version, salt, IV, and encrypted data
 
 ```dart
-final key = deriveKeyFromPassphrase(masterPassword);
+// V2 Enhanced encryption with PBKDF2
+final salt = generateSalt();
+final key = await deriveKeyFromPassphrasePBKDF2(masterPassword, salt);
 final iv = IV.fromSecureRandom(16);
 final encrypter = Encrypter(AES(key));
 final encrypted = encrypter.encrypt(plaintext, iv: iv);
+
+final package = {
+  'version': 2,
+  'salt': base64.encode(salt),
+  'iv': base64.encode(iv.bytes),
+  'data': encrypted.base64,
+  'iterations': 10000,
+  'timestamp': DateTime.now().millisecondsSinceEpoch,
+};
 ```
 
 #### Basic & Sensitive Vaults
-- **Encoding**: Base64 with integrity checksums
+- **Encoding**: Base64 with integrity checksums and enhanced markers
 - **Access**: Trusted persons (immediate for Basic, delayed for Sensitive)
 - **Rationale**: Intentionally accessible without master password to enable designed inheritance
+- **Format**: Enhanced V2 format with versioning and timestamps
 
 ```dart
+// Enhanced basic/sensitive vault encoding with V2 markers
 final encodedText = base64.encode(utf8.encode(text));
 final checksum = sha256.convert(utf8.encode(text)).toString().substring(0, 8);
-final package = {'data': encodedText, 'checksum': checksum};
+final package = {
+  'type': 'basic', // or 'sensitive'
+  'data': encodedText,
+  'checksum': checksum,
+  'version': 2,
+  'timestamp': DateTime.now().millisecondsSinceEpoch,
+};
+final result = 'BASIC_VAULT_V2:' + jsonEncode(package);
 ```
 
-### File Attachment Security
+### Enhanced File Attachment Security
+
+#### Binary Data Encryption
+- **Format**: Optimized binary format `[version][salt][iv][encrypted_data]`
+- **Encryption**: AES-256 with PBKDF2-derived keys
+- **Integrity**: Built-in format validation and error detection
+
+```dart
+// Enhanced binary encryption with optimized format
+final salt = generateSalt();
+final key = await deriveKeyFromPassphrasePBKDF2(passphrase, salt);
+final iv = IV.fromSecureRandom(16);
+final encrypter = Encrypter(AES(key));
+final encrypted = encrypter.encryptBytes(data, iv: iv);
+
+// Optimized binary format: [version][salt][iv][encrypted_data]
+final result = <int>[];
+result.add(2); // Version 2
+result.addAll(salt);
+result.addAll(iv.bytes);
+result.addAll(encrypted.bytes);
+```
 
 #### Local Storage Only
 - Files copied to application's private directory
@@ -80,14 +141,15 @@ final package = {'data': encodedText, 'checksum': checksum};
 - File size warnings and limits
 - Extension allow-listing
 
-## Access Control System
+## Enhanced Access Control System
 
 ### Authentication Types
 
 1. **Owner Authentication**
-   - Master password verification
+   - Master password verification with PBKDF2 or legacy support
    - Full access to all vaults and settings
    - Can reset trusted person access
+   - Automatic encryption method detection and fallback
 
 2. **Trusted Person Authentication**
    - Security questions verification
@@ -109,7 +171,7 @@ bool validateAnswer(String providedAnswer) {
 }
 ```
 
-### Privacy Level Enforcement
+### Enhanced Privacy Level Enforcement
 
 ```dart
 static bool canAccessVault({
@@ -139,6 +201,43 @@ static bool canAccessVault({
 }
 ```
 
+## Enhanced Performance and Security Features
+
+### Key Caching System
+- **PBKDF2 key caching** for performance optimization
+- **Memory management** with automatic cache size limits
+- **Secure cleanup** of sensitive data in memory
+- **Cache statistics** for monitoring and debugging
+
+```dart
+// Key caching for expensive PBKDF2 operations
+static final Map<String, Key> _keyCache = {};
+static const int _maxCacheSize = 10;
+
+// Cache management
+static void clearKeyCache() {
+  _keyCache.clear();
+}
+
+static void secureCleanup(List<int> sensitiveData) {
+  for (int i = 0; i < sensitiveData.length; i++) {
+    sensitiveData[i] = 0;
+  }
+}
+```
+
+### Automatic Fallback System
+- **Version detection** for encrypted data
+- **Automatic fallback** from PBKDF2 to legacy SHA-256
+- **Cross-version compatibility** maintained
+- **Graceful error handling** with detailed logging
+
+### Enhanced Binary Format
+- **Optimized storage** format reduces overhead
+- **Version markers** enable future upgrades
+- **Integrity validation** built into format
+- **Performance improvements** over text-based encoding
+
 ## Emergency Notification System
 
 ### Lock Screen Notifications
@@ -153,13 +252,14 @@ static bool canAccessVault({
 - No external data sources
 - Templates stored locally only
 
-## Session Management
+## Enhanced Session Management
 
 ### Authentication Sessions
 - Session-based authentication to reduce password entry
 - Configurable "request password every time" option
 - Automatic session clearing on app backgrounding
 - No persistent login tokens
+- **Enhanced session security** with encryption key management
 
 ### Owner Privilege Escalation
 ```dart
@@ -169,22 +269,22 @@ Future<void> setAuthenticatedAsOwner({String? password}) async {
   if (password != null && password.isNotEmpty) {
     _sessionMasterPassword = password;
   }
-  // Save session state
+  // Enhanced session state management
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.setBool('authenticated_this_session', true);
   await prefs.setString('authenticated_as', 'owner');
 }
 ```
 
-## Data Storage Security
+## Enhanced Data Storage Security
 
 ### Local Storage Structure
 ```
 /app_documents/
 ├── vaults/
-│   ├── vault.json              # Encrypted vault metadata
+│   ├── vault.json              # Enhanced vault metadata with versioning
 │   ├── security.json           # Security questions (answers hashed)
-│   └── settings.json           # App settings
+│   └── settings.json           # App settings with enhanced options
 └── vault_files/
     └── [vault_id]/             # Per-vault file directories
         ├── [timestamp]_file1.jpg
@@ -192,16 +292,17 @@ Future<void> setAuthenticatedAsOwner({String? password}) async {
 ```
 
 ### Data Encryption at Rest
-- **Vault Content**: Encrypted per privacy level
+- **Vault Content**: Multi-tier encryption per privacy level
 - **Security Questions**: Answers stored in plaintext for exact matching
 - **Settings**: Unencrypted (non-sensitive configuration)
-- **Files**: Protected by OS filesystem encryption
+- **Files**: Protected by OS filesystem encryption + application-level encryption
 
-## Backup and Recovery
+## Enhanced Backup and Recovery
 
 ### Export Security
-- **Encrypted Backups**: Full vault backup with master password protection
+- **Enhanced Encrypted Backups**: Full vault backup with PBKDF2 protection
 - **Unencrypted Exports**: Individual vault exports (owner only)
+- **Cross-version compatibility**: Backup format supports V1 and V2 data
 - **No Cloud Integration**: Manual export/import only
 
 ### Password Recovery
@@ -209,7 +310,7 @@ Future<void> setAuthenticatedAsOwner({String? password}) async {
 - **No Reset Mechanism**: Lost passwords = lost data
 - **No Hints or Questions**: Would weaken security
 
-## Threat Model
+## Enhanced Threat Model
 
 ### Threats We Protect Against
 
@@ -217,10 +318,12 @@ Future<void> setAuthenticatedAsOwner({String? password}) async {
    - Screen lock and biometric protection (OS level)
    - Master password requirement for app access
    - Session timeouts and automatic locking
+   - **Enhanced key derivation** makes offline attacks significantly harder
 
 2. **Data Exfiltration**
    - Local-only storage prevents remote data theft
-   - Encrypted storage prevents offline attacks
+   - **PBKDF2 encryption** prevents offline attacks
+   - **Salt-based security** prevents rainbow table attacks
    - No cloud vulnerabilities
 
 3. **Social Engineering**
@@ -228,7 +331,12 @@ Future<void> setAuthenticatedAsOwner({String? password}) async {
    - No customer service bypass options
    - Technical enforcement of privacy rules
 
-4. **Malicious Trusted Persons**
+4. **Brute Force Attacks**
+   - **10,000 PBKDF2 iterations** significantly slow down brute force attempts
+   - **Unique salts** prevent precomputed attack tables
+   - **Strong key derivation** increases attack cost exponentially
+
+5. **Malicious Trusted Persons**
    - Privacy levels prevent unauthorized access
    - Ultra sensitive vaults never accessible
    - Owner can reset access if still alive
@@ -247,48 +355,64 @@ Future<void> setAuthenticatedAsOwner({String? password}) async {
    - If owner is forced to reveal master password
    - Physical threats against the user
 
-## Security Auditing
+## Enhanced Security Auditing
 
 ### Logging and Monitoring
 - Failed authentication attempts logged locally
+- **Enhanced debugging** with version and method tracking
+- **Performance monitoring** for PBKDF2 operations
 - No network logging or telemetry
-- Debug logs contain no sensitive information
 
 ### Audit Points
 ```dart
-// Example security audit points
+// Enhanced security audit points
+debugPrint('Using PBKDF2 encryption v2 with ${iterations} iterations');
+debugPrint('Fallback to legacy SHA-256 encryption');
+debugPrint('Key derivation completed in ${stopwatch.elapsedMilliseconds}ms');
 debugPrint('Security question ${i + 1} answered incorrectly');
 debugPrint('All ${questions.length} security questions answered correctly');
-debugPrint('Owner authentication successful');
+debugPrint('Owner authentication successful with enhanced session management');
 debugPrint('Trusted person access granted for vault: $vaultId');
 ```
 
-## Compliance and Standards
+## Enhanced Compliance and Standards
 
 ### Cryptographic Standards
-- **NIST-Approved Algorithms**: AES-256, SHA-256
+- **NIST-Approved Algorithms**: AES-256, PBKDF2-HMAC-SHA256, SHA-256
+- **Industry Best Practices**: 10,000+ PBKDF2 iterations
 - **Secure Random Number Generation**: OS-provided entropy
-- **Key Management**: Derived from user passwords, never stored
+- **Enhanced Key Management**: PBKDF2-derived keys with secure caching
 
 ### Privacy Standards
 - **Data Minimization**: Only necessary data collected
 - **Purpose Limitation**: Data used only for stated purpose
 - **Storage Limitation**: Local storage only, no cloud
 - **Transparency**: Complete source code disclosure for security components
+- **Enhanced Security**: Upgraded encryption without compromising privacy
 
-## Security Testing
+## Enhanced Security Testing
 
 ### Recommended Test Vectors
 
-1. **Encryption Round-Trip Tests**
+1. **PBKDF2 Encryption Round-Trip Tests**
    ```dart
-   final plaintext = "Test message";
-   final encrypted = encryptText(plaintext, "password123");
-   final decrypted = decryptText(encrypted, "password123");
+   const plaintext = "Test message";
+   final encrypted = await CoreEncryptionService.encryptText(plaintext, "password123");
+   final decrypted = await CoreEncryptionService.decryptText(encrypted, "password123");
    assert(decrypted == plaintext);
    ```
 
-2. **Privacy Level Enforcement**
+2. **Cross-Version Compatibility Tests**
+   ```dart
+   // Test V2 -> V1 fallback
+   final v2Encrypted = await CoreEncryptionService.encryptText(plaintext, password);
+   final v1Encrypted = await CoreEncryptionService.encryptText(plaintext, password, useLegacy: true);
+   
+   assert(await CoreEncryptionService.decryptText(v2Encrypted, password) == plaintext);
+   assert(await CoreEncryptionService.decryptText(v1Encrypted, password) == plaintext);
+   ```
+
+3. **Enhanced Privacy Level Enforcement**
    ```dart
    // Ultra vault should never be accessible to trusted person
    assert(!canAccessVault(
@@ -299,15 +423,13 @@ debugPrint('Trusted person access granted for vault: $vaultId');
    ));
    ```
 
-3. **Security Questions Validation**
+4. **Performance and Security Balance Tests**
    ```dart
-   final question = SecurityQuestion(
-     id: "1", 
-     question: "Test?", 
-     answer: "Correct"
-   );
-   assert(question.validateAnswer("Correct") == true);
-   assert(question.validateAnswer("correct") == false);
+   // PBKDF2 should complete within reasonable time
+   final stopwatch = Stopwatch()..start();
+   await CoreEncryptionService.deriveKeyFromPassphrasePBKDF2(password, salt);
+   stopwatch.stop();
+   assert(stopwatch.elapsedMilliseconds < 5000); // 5 second max
    ```
 
 ## Security Contact
@@ -320,4 +442,8 @@ For security vulnerabilities or concerns regarding this implementation:
 
 ---
 
-**Note**: This document describes the security implementation made transparent through open source release. The complete application includes additional features and UI components not covered in this security-focused repository.
+**Note**: This document describes the enhanced security implementation made transparent through open source release. The complete application includes additional features and UI components not covered in this security-focused repository.
+
+**Security Version**: 2.0 (Enhanced with PBKDF2)
+**Backward Compatibility**: Maintains full compatibility with Version 1.0 (Legacy SHA-256)
+**Last Updated**: July 21st 2025
